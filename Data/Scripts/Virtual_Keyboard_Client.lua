@@ -9,7 +9,8 @@ local ROOT = script.parent.parent
 
 local TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty("toggle_shift_after_space")
 local MAX_LENGTH = ROOT:GetCustomProperty("max_length")
-local ENABLE_CURSOR = script:GetCustomProperty("enable_cursor")
+local ENABLE_CURSOR = ROOT:GetCustomProperty("enable_cursor")
+local DEBUG = ROOT:GetCustomProperty("debug")
 
 local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject()
 local KEYS = script:GetCustomProperty("Keys"):WaitForObject()
@@ -150,13 +151,15 @@ end
 
 CLOSE_BUTTON.clickedEvent:Connect(close_keyboard)
 
-Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
-	if(binding == "ability_extra_1") then
-		open_keyboard()
-	elseif(binding == "ability_extra_2") then
-		close_keyboard()
-	end
-end)
+if(DEBUG) then
+	Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
+		if(binding == "ability_extra_1") then
+			open_keyboard()
+		elseif(binding == "ability_extra_2") then
+			close_keyboard()
+		end
+	end)
+end
 
 Events.Connect("keyboard.open", open_keyboard)
 Events.Connect("keyboard.close", close_keyboard)
