@@ -71,6 +71,10 @@ Objects {
           Rotator {
           }
         }
+        Overrides {
+          Name: "cs:debug"
+          Bool: false
+        }
       }
     }
     TemplateAsset {
