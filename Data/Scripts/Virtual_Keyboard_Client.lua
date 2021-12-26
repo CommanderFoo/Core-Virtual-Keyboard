@@ -1,17 +1,23 @@
-local Tween = require(script:GetCustomProperty("Tween"))
+local TWEEN_PROP = script:GetCustomProperty("Tween")
+local Tween = nil
+
+if(TWEEN_PROP ~= nil) then
+	Tween = require(TWEEN_PROP)
+end
 
 local ROOT = script.parent.parent
 
 local TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty("toggle_shift_after_space")
 local MAX_LENGTH = ROOT:GetCustomProperty("max_length")
+local ENABLE_CURSOR = script:GetCustomProperty("enable_cursor")
 
-local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject() ---@type UIText
-local KEYS = script:GetCustomProperty("Keys"):WaitForObject() ---@type UIPanel
-local DELETE = script:GetCustomProperty("Delete"):WaitForObject() ---@type UIButton
-local SHIFT = script:GetCustomProperty("Shift"):WaitForObject() ---@type UIButton
-local KEYBOARD = script:GetCustomProperty("Keyboard"):WaitForObject() ---@type UIPanel
-local CLOSE_BUTTON = script:GetCustomProperty("CloseButton"):WaitForObject() ---@type UIButton
-local COUNTER = script:GetCustomProperty("Counter"):WaitForObject() ---@type UIText
+local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject()
+local KEYS = script:GetCustomProperty("Keys"):WaitForObject()
+local DELETE = script:GetCustomProperty("Delete"):WaitForObject()
+local SHIFT = script:GetCustomProperty("Shift"):WaitForObject()
+local KEYBOARD = script:GetCustomProperty("Keyboard"):WaitForObject()
+local CLOSE_BUTTON = script:GetCustomProperty("CloseButton"):WaitForObject()
+local COUNTER = script:GetCustomProperty("Counter"):WaitForObject()
 
 local keys = KEYS:GetChildren()
 local shift_toggle = true
@@ -19,8 +25,10 @@ local shift_line = SHIFT:FindChildByName("Line")
 local tween_opacity = nil
 local is_open = false
 
-UI.SetCursorVisible(true)
-UI.SetCanCursorInteractWithUI(true)
+if(ENABLE_CURSOR) then
+	UI.SetCursorVisible(true)
+	UI.SetCanCursorInteractWithUI(true)
+end
 
 if(MAX_LENGTH > 0) then
 	COUNTER.visibility = Visibility.FORCE_ON
@@ -67,6 +75,8 @@ local function on_key_clicked(button)
 		input_letter = (shift_toggle and string.upper(input_letter)) or input_letter
 		INPUT_TEXT.text = INPUT_TEXT.text .. tostring(input_letter)
 
+		Events.Broadcast("keyboard.change", INPUT_TEXT.text, MAX_LENGTH)
+
 		if(TOGGLE_SHIFT_AFTER_SPACE) then
 			toggle_letter_case((input_letter == " " and true) or false)
 		else
@@ -84,16 +94,21 @@ local function open_keyboard()
 
 	is_open = true
 
-	tween_opacity = Tween:new(.3, { o = 0 }, { o = 1})
-	tween_opacity:on_change(function(c)
-		KEYBOARD.opacity = c.o
-	end)
+	if(Tween ~= nil) then
+		tween_opacity = Tween:new(.3, { o = 0 }, { o = 1})
+		tween_opacity:on_change(function(c)
+			KEYBOARD.opacity = c.o
+		end)
 
-	tween_opacity:on_complete(function() tween_opacity = nil end)
+		tween_opacity:on_complete(function() tween_opacity = nil end)
 
-	tween_opacity:on_start(function()
+		tween_opacity:on_start(function()
+			KEYBOARD.visibility = Visibility.FORCE_ON
+		end)
+	else
+		KEYBOARD.opacity = 1
 		KEYBOARD.visibility = Visibility.FORCE_ON
-	end)
+	end
 end
 
 local function close_keyboard()
@@ -103,18 +118,24 @@ local function close_keyboard()
 
 	is_open = false
 
-	tween_opacity = Tween:new(.3, { o = 1 }, { o = 0})
-	tween_opacity:on_change(function(c)
-		KEYBOARD.opacity = c.o
-	end)
+	if(Tween ~= nil) then
+		tween_opacity = Tween:new(.3, { o = 1 }, { o = 0})
+		tween_opacity:on_change(function(c)
+			KEYBOARD.opacity = c.o
+		end)
 
-	tween_opacity:on_complete(function()
-		tween_opacity = nil
+		tween_opacity:on_complete(function()
+			tween_opacity = nil
+			KEYBOARD.visibility = Visibility.FORCE_OFF
+			INPUT_TEXT.text = ""
+			toggle_letter_case(true)
+		end)
+	else
+		KEYBOARD.opacity = 0
 		KEYBOARD.visibility = Visibility.FORCE_OFF
 		INPUT_TEXT.text = ""
 		toggle_letter_case(true)
-
-	end)
+	end
 end
 
 for i, k in ipairs(keys) do
@@ -136,3 +157,6 @@ Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
 		close_keyboard()
 	end
 end)
+
+Events.Connect("keyboard.open", open_keyboard)
+Events.Connect("keyboard.close", close_keyboard)

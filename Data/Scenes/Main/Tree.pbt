@@ -62,6 +62,10 @@ Objects {
       Bool: true
     }
     Overrides {
+      Name: "cs:enable_cursor"
+      Bool: true
+    }
+    Overrides {
       Name: "cs:max_length:tooltip"
       String: "The max length allowed to be entered. For unlimited length, enter 0."
     }
@@ -84,6 +88,10 @@ Objects {
     Overrides {
       Name: "cs:toggle_shift_after_space:ml"
       Bool: false
+    }
+    Overrides {
+      Name: "cs:enable_cursor:tooltip"
+      String: "If enabled, then the cursor will be made visible."
     }
   }
   Collidable_v2 {
