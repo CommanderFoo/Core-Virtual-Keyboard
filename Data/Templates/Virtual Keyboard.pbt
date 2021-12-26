@@ -20,6 +20,12 @@ Assets {
         ChildIds: 8647558281789833580
         UnregisteredParameters {
           Overrides {
+            Name: "cs:Tween"
+            AssetReference {
+              Id: 841534158063459245
+            }
+          }
+          Overrides {
             Name: "cs:max_length"
             Int: 50
           }
@@ -33,7 +39,7 @@ Assets {
           }
           Overrides {
             Name: "cs:debug"
-            Bool: false
+            Bool: true
           }
           Overrides {
             Name: "cs:max_length:tooltip"
@@ -9339,12 +9345,6 @@ Assets {
         }
         ParentId: 8647558281789833580
         UnregisteredParameters {
-          Overrides {
-            Name: "cs:Tween"
-            AssetReference {
-              Id: 841534158063459245
-            }
-          }
           Overrides {
             Name: "cs:InputText"
             ObjectReference {

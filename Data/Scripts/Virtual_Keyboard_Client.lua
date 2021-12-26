@@ -1,11 +1,11 @@
-local TWEEN_PROP = script:GetCustomProperty("Tween")
+local ROOT = script.parent.parent
+
+local TWEEN_PROP = ROOT:GetCustomProperty("Tween")
 local Tween = nil
 
 if(TWEEN_PROP ~= nil) then
 	Tween = require(TWEEN_PROP)
 end
-
-local ROOT = script.parent.parent
 
 local TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty("toggle_shift_after_space")
 local MAX_LENGTH = ROOT:GetCustomProperty("max_length")
@@ -25,11 +25,6 @@ local shift_toggle = true
 local shift_line = SHIFT:FindChildByName("Line")
 local tween_opacity = nil
 local is_open = false
-
-if(ENABLE_CURSOR) then
-	UI.SetCursorVisible(true)
-	UI.SetCanCursorInteractWithUI(true)
-end
 
 if(MAX_LENGTH > 0) then
 	COUNTER.visibility = Visibility.FORCE_ON
@@ -95,6 +90,11 @@ local function open_keyboard()
 
 	is_open = true
 
+	if(ENABLE_CURSOR) then
+		UI.SetCursorVisible(true)
+		UI.SetCanCursorInteractWithUI(true)
+	end
+
 	if(Tween ~= nil) then
 		tween_opacity = Tween:new(.3, { o = 0 }, { o = 1})
 		tween_opacity:on_change(function(c)
@@ -112,6 +112,14 @@ local function open_keyboard()
 	end
 end
 
+local function reset()
+	KEYBOARD.opacity = 0
+	KEYBOARD.visibility = Visibility.FORCE_OFF
+	INPUT_TEXT.text = ""
+	toggle_letter_case(true)
+	update_counter()
+end
+
 local function close_keyboard()
 	if(not is_open) then
 		return
@@ -119,23 +127,20 @@ local function close_keyboard()
 
 	is_open = false
 
+	if(ENABLE_CURSOR) then
+		UI.SetCursorVisible(false)
+		UI.SetCanCursorInteractWithUI(false)
+	end
+
 	if(Tween ~= nil) then
 		tween_opacity = Tween:new(.3, { o = 1 }, { o = 0})
 		tween_opacity:on_change(function(c)
 			KEYBOARD.opacity = c.o
 		end)
 
-		tween_opacity:on_complete(function()
-			tween_opacity = nil
-			KEYBOARD.visibility = Visibility.FORCE_OFF
-			INPUT_TEXT.text = ""
-			toggle_letter_case(true)
-		end)
+		tween_opacity:on_complete(reset)
 	else
-		KEYBOARD.opacity = 0
-		KEYBOARD.visibility = Visibility.FORCE_OFF
-		INPUT_TEXT.text = ""
-		toggle_letter_case(true)
+		reset()
 	end
 end
 
