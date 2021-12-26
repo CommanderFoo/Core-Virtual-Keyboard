@@ -69,16 +69,16 @@ function Tween:tween(delta)
 	end
 
 	self.original = self.original or Tween.copy_table(self.from)
-	
+
 	if((self.time - self.delay_tween) >= self.duration) then
 		self.from = Tween.copy_table(self.to)
 
 		if(type(self.change_evt) == "function") then
 			self.change_evt(self.to)
 		end
-		
+
 		self.tween_finished = true
-		
+
 		if(type(self.complete_evt) == "function") then
 			self.complete_evt()
 		end
@@ -136,7 +136,7 @@ function Tween:on_complete(fn)
 	if(fn and type(fn) == "function" and self.complete_evt == nil) then
 		self.complete_evt = fn
 	end
-	
+
 	return self
 end
 
