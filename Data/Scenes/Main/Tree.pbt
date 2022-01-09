@@ -73,7 +73,7 @@ Objects {
         }
         Overrides {
           Name: "cs:debug"
-          Bool: false
+          Bool: true
         }
       }
     }

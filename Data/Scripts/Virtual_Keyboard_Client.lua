@@ -83,10 +83,29 @@ local function on_key_clicked(button)
 	update_counter()
 end
 
-local function open_keyboard()
+local function truncate(text)
+	return string.sub(text, 1, MAX_LENGTH)
+end
+
+local function set_text(text)
+	if(text == nil) then
+		return
+	end
+
+	INPUT_TEXT.text = truncate(tostring(text))
+	update_counter()
+end
+
+local function clear_text()
+	INPUT_TEXT.text = ""
+end
+
+local function open_keyboard(text)
 	if(is_open) then
 		return
 	end
+
+	set_text(text)
 
 	is_open = true
 
@@ -160,6 +179,7 @@ if(DEBUG) then
 	Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
 		if(binding == "ability_extra_1") then
 			open_keyboard()
+			set_text("Hello World")
 		elseif(binding == "ability_extra_2") then
 			close_keyboard()
 		end
@@ -168,3 +188,5 @@ end
 
 Events.Connect("keyboard.open", open_keyboard)
 Events.Connect("keyboard.close", close_keyboard)
+Events.Connect("keyboard.text", set_text)
+Events.Connect("keyboard.clear", clear_text)
