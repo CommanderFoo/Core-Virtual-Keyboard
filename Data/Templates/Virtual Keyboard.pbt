@@ -50,6 +50,12 @@ Assets {
             Bool: true
           }
           Overrides {
+            Name: "cs:blocker_color"
+            Color {
+              A: 0.2
+            }
+          }
+          Overrides {
             Name: "cs:debug"
             Bool: false
           }

@@ -13,6 +13,7 @@ local ENABLE_CURSOR = ROOT:GetCustomProperty("enable_cursor")
 local SHOW_SAVE_BUTTON = ROOT:GetCustomProperty("show_save_button")
 local CLOSE_ON_SAVE = ROOT:GetCustomProperty("close_on_save")
 local ENABLE_BLOCKER = ROOT:GetCustomProperty("enable_blocker")
+local BLOCKER_COLOR = ROOT:GetCustomProperty("blocker_color")
 local DEBUG = ROOT:GetCustomProperty("debug")
 
 local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject()
@@ -36,6 +37,8 @@ if(MAX_LENGTH > 0) then
 	COUNTER.visibility = Visibility.FORCE_ON
 	COUNTER.text = "0 / " .. tostring(MAX_LENGTH)
 end
+
+BLOCKER:SetButtonColor(BLOCKER_COLOR)
 
 local function enable_save_button()
 	SAVE_BUTTON.isInteractable = true
