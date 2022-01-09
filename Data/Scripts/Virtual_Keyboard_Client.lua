@@ -12,6 +12,7 @@ local MAX_LENGTH = ROOT:GetCustomProperty("max_length")
 local ENABLE_CURSOR = ROOT:GetCustomProperty("enable_cursor")
 local SHOW_SAVE_BUTTON = ROOT:GetCustomProperty("show_save_button")
 local CLOSE_ON_SAVE = ROOT:GetCustomProperty("close_on_save")
+local ENABLE_BLOCKER = ROOT:GetCustomProperty("enable_blocker")
 local DEBUG = ROOT:GetCustomProperty("debug")
 
 local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject()
