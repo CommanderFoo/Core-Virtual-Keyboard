@@ -10,6 +10,8 @@ end
 local TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty("toggle_shift_after_space")
 local MAX_LENGTH = ROOT:GetCustomProperty("max_length")
 local ENABLE_CURSOR = ROOT:GetCustomProperty("enable_cursor")
+local SHOW_SAVE_BUTTON = ROOT:GetCustomProperty("show_save_button")
+local CLOSE_ON_SAVE = ROOT:GetCustomProperty("close_on_save")
 local DEBUG = ROOT:GetCustomProperty("debug")
 
 local INPUT_TEXT = script:GetCustomProperty("InputText"):WaitForObject()
@@ -19,6 +21,8 @@ local SHIFT = script:GetCustomProperty("Shift"):WaitForObject()
 local KEYBOARD = script:GetCustomProperty("Keyboard"):WaitForObject()
 local CLOSE_BUTTON = script:GetCustomProperty("CloseButton"):WaitForObject()
 local COUNTER = script:GetCustomProperty("Counter"):WaitForObject()
+local SAVE_BUTTON = script:GetCustomProperty("SaveButton"):WaitForObject()
+local INPUT_BACKGROUND = script:GetCustomProperty("InputBackground"):WaitForObject() ---@type UIImage
 
 local keys = KEYS:GetChildren()
 local shift_toggle = true
@@ -31,9 +35,34 @@ if(MAX_LENGTH > 0) then
 	COUNTER.text = "0 / " .. tostring(MAX_LENGTH)
 end
 
+local function enable_save_button()
+	SAVE_BUTTON.isInteractable = true
+end
+
+local function disable_save_button()
+	SAVE_BUTTON.isInteractable = false
+end
+
+local function setup_save_button()
+	if(SHOW_SAVE_BUTTON) then
+		SAVE_BUTTON.visibility = Visibility.FORCE_ON
+		INPUT_BACKGROUND.width = INPUT_BACKGROUND.width - 24
+	
+		if(MAX_LENGTH == 0) then
+			enable_save_button()
+		end
+	end
+end
+
 local function update_counter()
 	if(MAX_LENGTH > 0) then
 		COUNTER.text = string.len(INPUT_TEXT.text) .. " / " .. tostring(MAX_LENGTH)
+		
+		if(string.len(INPUT_TEXT.text) > 0) then
+			enable_save_button()
+		else
+			disable_save_button()
+		end
 	end
 end
 
@@ -163,6 +192,14 @@ local function close_keyboard()
 	end
 end
 
+local function save()
+	Events.Broadcast("keyboard.save", INPUT_TEXT.text)
+
+	if(CLOSE_ON_SAVE) then
+		close_keyboard()
+	end
+end
+
 for i, k in ipairs(keys) do
 	k.clickedEvent:Connect(on_key_clicked)
 end
@@ -174,17 +211,19 @@ function Tick(dt)
 end
 
 CLOSE_BUTTON.clickedEvent:Connect(close_keyboard)
+SAVE_BUTTON.clickedEvent:Connect(save)
 
 if(DEBUG) then
 	Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
-		if(binding == "ability_extra_1") then
+		if(binding == "ability_extra_1") then -- 1
 			open_keyboard()
-			set_text("Hello World")
-		elseif(binding == "ability_extra_2") then
+		elseif(binding == "ability_extra_2") then -- 2
 			close_keyboard()
 		end
 	end)
 end
+
+setup_save_button()
 
 Events.Connect("keyboard.open", open_keyboard)
 Events.Connect("keyboard.close", close_keyboard)
