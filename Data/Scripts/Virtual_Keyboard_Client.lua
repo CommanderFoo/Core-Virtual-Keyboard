@@ -22,7 +22,8 @@ local KEYBOARD = script:GetCustomProperty("Keyboard"):WaitForObject()
 local CLOSE_BUTTON = script:GetCustomProperty("CloseButton"):WaitForObject()
 local COUNTER = script:GetCustomProperty("Counter"):WaitForObject()
 local SAVE_BUTTON = script:GetCustomProperty("SaveButton"):WaitForObject()
-local INPUT_BACKGROUND = script:GetCustomProperty("InputBackground"):WaitForObject() ---@type UIImage
+local INPUT_BACKGROUND = script:GetCustomProperty("InputBackground"):WaitForObject()
+local BLOCKER = script:GetCustomProperty("Blocker"):WaitForObject()
 
 local keys = KEYS:GetChildren()
 local shift_toggle = true
@@ -129,6 +130,18 @@ local function clear_text()
 	INPUT_TEXT.text = ""
 end
 
+local function block()
+	if(ENABLE_BLOCKER) then
+		BLOCKER.visibility = Visibility.FORCE_ON
+	end
+end
+
+local function unblock()
+	if(ENABLE_BLOCKER) then
+		BLOCKER.visibility = Visibility.FORCE_OFF
+	end
+end
+
 local function open_keyboard(text)
 	if(is_open) then
 		return
@@ -137,6 +150,7 @@ local function open_keyboard(text)
 	set_text(text)
 
 	is_open = true
+	block()
 
 	if(ENABLE_CURSOR) then
 		UI.SetCursorVisible(true)
@@ -174,6 +188,7 @@ local function close_keyboard()
 	end
 
 	is_open = false
+	unblock()
 
 	if(ENABLE_CURSOR) then
 		UI.SetCursorVisible(false)
@@ -210,9 +225,6 @@ function Tick(dt)
 	end
 end
 
-CLOSE_BUTTON.clickedEvent:Connect(close_keyboard)
-SAVE_BUTTON.clickedEvent:Connect(save)
-
 if(DEBUG) then
 	Game.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)
 		if(binding == "ability_extra_1") then -- 1
@@ -225,7 +237,12 @@ end
 
 setup_save_button()
 
+CLOSE_BUTTON.clickedEvent:Connect(close_keyboard)
+SAVE_BUTTON.clickedEvent:Connect(save)
+
 Events.Connect("keyboard.open", open_keyboard)
 Events.Connect("keyboard.close", close_keyboard)
 Events.Connect("keyboard.text", set_text)
 Events.Connect("keyboard.clear", clear_text)
+Events.Connect("keyboard.unblock", unblock)
+Events.Connect("keyboard.block", block)

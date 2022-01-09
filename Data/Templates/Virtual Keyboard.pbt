@@ -39,15 +39,19 @@ Assets {
           }
           Overrides {
             Name: "cs:show_save_button"
-            Bool: true
+            Bool: false
           }
           Overrides {
             Name: "cs:close_on_save"
             Bool: false
           }
           Overrides {
-            Name: "cs:debug"
+            Name: "cs:enable_blocker"
             Bool: true
+          }
+          Overrides {
+            Name: "cs:debug"
+            Bool: false
           }
           Overrides {
             Name: "cs:max_length:tooltip"
@@ -84,6 +88,10 @@ Assets {
           Overrides {
             Name: "cs:show_save_button:tooltip"
             String: "If enabled, a checkmark will show next to the close button that can be used to act as a save button."
+          }
+          Overrides {
+            Name: "cs:enable_blocker:tooltip"
+            String: "If enabled, then any UI below the keyboard will be blocked from interaction."
           }
         }
         Collidable_v2 {
@@ -191,6 +199,7 @@ Assets {
           }
         }
         ParentId: 8647558281789833580
+        ChildIds: 15279784360868348324
         ChildIds: 17738082375532068926
         Collidable_v2 {
           Value: "mc:ecollisionsetting:inheritfromparent"
@@ -231,6 +240,107 @@ Assets {
             TargetAnchor {
               Anchor {
                 Value: "mc:euianchor:topleft"
+              }
+            }
+          }
+        }
+      }
+      Objects {
+        Id: 15279784360868348324
+        Name: "Blocker"
+        Transform {
+          Location {
+          }
+          Rotation {
+          }
+          Scale {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+        ParentId: 16881439366781949014
+        Collidable_v2 {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        Visible_v2 {
+          Value: "mc:evisibilitysetting:forceoff"
+        }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        EditorIndicatorVisibility {
+          Value: "mc:eindicatorvisibility:visiblewhenselected"
+        }
+        Control {
+          Width: 100
+          Height: 30
+          RenderTransformPivot {
+            Anchor {
+              Value: "mc:euianchor:middlecenter"
+            }
+          }
+          UseParentWidth: true
+          UseParentHeight: true
+          Button {
+            FontColor {
+              A: 1
+            }
+            FontSize: 20
+            ButtonColor {
+              R: 1
+              G: 1
+              B: 1
+            }
+            HoveredColor {
+              R: 1
+              G: 1
+              B: 1
+              A: 1
+            }
+            PressedColor {
+              R: 1
+              G: 1
+              B: 1
+              A: 1
+            }
+            DisabledColor {
+              R: 1
+              G: 1
+              B: 1
+              A: 1
+            }
+            Brush {
+              Id: 841534158063459245
+            }
+            IsButtonEnabled: true
+            OnlyUseMainColor: true
+            ClickMode {
+              Value: "mc:ebuttonclickmode:default"
+            }
+            Font {
+            }
+            Justification {
+              Value: "mc:etextjustify:center"
+            }
+            VerticalJustification {
+              Value: "mc:everticaljustification:center"
+            }
+            ShadowColor {
+              A: 1
+            }
+            ShadowOffset {
+            }
+          }
+          AnchorLayout {
+            SelfAnchor {
+              Anchor {
+                Value: "mc:euianchor:middlecenter"
+              }
+            }
+            TargetAnchor {
+              Anchor {
+                Value: "mc:euianchor:middlecenter"
               }
             }
           }
@@ -9511,6 +9621,12 @@ Assets {
             Name: "cs:InputBackground"
             ObjectReference {
               SubObjectId: 2302045202685995592
+            }
+          }
+          Overrides {
+            Name: "cs:Blocker"
+            ObjectReference {
+              SubObjectId: 15279784360868348324
             }
           }
         }

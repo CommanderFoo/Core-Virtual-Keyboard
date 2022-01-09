@@ -71,18 +71,6 @@ Objects {
           Rotator {
           }
         }
-        Overrides {
-          Name: "cs:debug"
-          Bool: false
-        }
-        Overrides {
-          Name: "cs:show_save_button"
-          Bool: false
-        }
-        Overrides {
-          Name: "cs:max_length"
-          Int: 50
-        }
       }
     }
     TemplateAsset {
