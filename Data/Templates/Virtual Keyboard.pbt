@@ -38,6 +38,14 @@ Assets {
             Bool: true
           }
           Overrides {
+            Name: "cs:show_save_button"
+            Bool: true
+          }
+          Overrides {
+            Name: "cs:close_on_save"
+            Bool: false
+          }
+          Overrides {
             Name: "cs:debug"
             Bool: true
           }
@@ -72,6 +80,10 @@ Assets {
           Overrides {
             Name: "cs:debug:tooltip"
             String: "If enabled, then you can test opening and closing the keyboard by pressing 1 or 2."
+          }
+          Overrides {
+            Name: "cs:show_save_button:tooltip"
+            String: "If enabled, a checkmark will show next to the close button that can be used to act as a save button."
           }
         }
         Collidable_v2 {
@@ -280,7 +292,7 @@ Assets {
       }
       Objects {
         Id: 8244601938806123326
-        Name: "Background"
+        Name: "Keyboard Background"
         Transform {
           Location {
           }
@@ -367,6 +379,7 @@ Assets {
         ParentId: 8244601938806123326
         ChildIds: 8442925994753883641
         ChildIds: 17466183341429784721
+        ChildIds: 5018994705241268700
         ChildIds: 2302045202685995592
         Collidable_v2 {
           Value: "mc:ecollisionsetting:inheritfromparent"
@@ -480,7 +493,7 @@ Assets {
       }
       Objects {
         Id: 17466183341429784721
-        Name: "Close Button"
+        Name: "Save Button"
         Transform {
           Location {
             X: -50
@@ -488,6 +501,107 @@ Assets {
           }
           Rotation {
             Yaw: -89.9999924
+          }
+          Scale {
+            X: 1
+            Y: 1
+            Z: 1
+          }
+        }
+        ParentId: 1524853271374595327
+        Collidable_v2 {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        Visible_v2 {
+          Value: "mc:evisibilitysetting:forceoff"
+        }
+        CameraCollidable {
+          Value: "mc:ecollisionsetting:inheritfromparent"
+        }
+        EditorIndicatorVisibility {
+          Value: "mc:eindicatorvisibility:visiblewhenselected"
+        }
+        Control {
+          Width: 24
+          Height: 24
+          UIX: -54
+          UIY: 2
+          RenderTransformPivot {
+            Anchor {
+              Value: "mc:euianchor:middlecenter"
+            }
+          }
+          Button {
+            FontColor {
+              A: 1
+            }
+            FontSize: 20
+            ButtonColor {
+              G: 0.467783839
+              B: 1
+              A: 1
+            }
+            HoveredColor {
+              R: 0.314583302
+              G: 0.635210037
+              B: 1
+              A: 1
+            }
+            PressedColor {
+              R: 0.314583302
+              G: 0.635210037
+              B: 1
+              A: 1
+            }
+            DisabledColor {
+              G: 0.467783451
+              B: 1
+              A: 0.25
+            }
+            Brush {
+              Id: 6653268469786496343
+            }
+            ClickMode {
+              Value: "mc:ebuttonclickmode:default"
+            }
+            Font {
+            }
+            Justification {
+              Value: "mc:etextjustify:center"
+            }
+            VerticalJustification {
+              Value: "mc:everticaljustification:center"
+            }
+            ShadowColor {
+              A: 1
+            }
+            ShadowOffset {
+            }
+          }
+          AnchorLayout {
+            SelfAnchor {
+              Anchor {
+                Value: "mc:euianchor:middleright"
+              }
+            }
+            TargetAnchor {
+              Anchor {
+                Value: "mc:euianchor:middleright"
+              }
+            }
+          }
+        }
+      }
+      Objects {
+        Id: 5018994705241268700
+        Name: "Close Button"
+        Transform {
+          Location {
+            X: -50
+            Y: -1250
+          }
+          Rotation {
+            Yaw: -89.9999847
           }
           Scale {
             X: 1
@@ -683,7 +797,7 @@ Assets {
           Value: "mc:eindicatorvisibility:visiblewhenselected"
         }
         Control {
-          Width: -95
+          Width: -100
           UIX: 10
           RenderTransformPivot {
             Anchor {
@@ -9378,13 +9492,25 @@ Assets {
           Overrides {
             Name: "cs:CloseButton"
             ObjectReference {
-              SubObjectId: 17466183341429784721
+              SubObjectId: 5018994705241268700
             }
           }
           Overrides {
             Name: "cs:Counter"
             ObjectReference {
               SubObjectId: 1102957232038326496
+            }
+          }
+          Overrides {
+            Name: "cs:SaveButton"
+            ObjectReference {
+              SubObjectId: 17466183341429784721
+            }
+          }
+          Overrides {
+            Name: "cs:InputBackground"
+            ObjectReference {
+              SubObjectId: 2302045202685995592
             }
           }
         }
@@ -9417,6 +9543,15 @@ Assets {
       PrimaryAsset {
         AssetType: "PlatformBrushAssetRef"
         AssetId: "BackgroundNoOutline_019"
+      }
+    }
+    Assets {
+      Id: 6653268469786496343
+      Name: "Icon Checkmark"
+      PlatformAssetType: 9
+      PrimaryAsset {
+        AssetType: "PlatformBrushAssetRef"
+        AssetId: "Icon_Checkmark"
       }
     }
     Assets {

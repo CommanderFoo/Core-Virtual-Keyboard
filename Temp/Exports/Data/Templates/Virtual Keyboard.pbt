@@ -68,6 +68,14 @@ Assets {
                 Bool: true
               }
               Overrides {
+                Name: "cs:show_save_button"
+                Bool: true
+              }
+              Overrides {
+                Name: "cs:close_on_save"
+                Bool: false
+              }
+              Overrides {
                 Name: "cs:debug"
                 Bool: true
               }
@@ -102,6 +110,10 @@ Assets {
               Overrides {
                 Name: "cs:debug:tooltip"
                 String: "If enabled, then you can test opening and closing the keyboard by pressing 1 or 2."
+              }
+              Overrides {
+                Name: "cs:show_save_button:tooltip"
+                String: "If enabled, a checkmark will show next to the close button that can be used to act as a save button."
               }
             }
             Collidable_v2 {
@@ -310,7 +322,7 @@ Assets {
           }
           Objects {
             Id: 8244601938806123326
-            Name: "Background"
+            Name: "Keyboard Background"
             Transform {
               Location {
               }
@@ -397,6 +409,7 @@ Assets {
             ParentId: 8244601938806123326
             ChildIds: 8442925994753883641
             ChildIds: 17466183341429784721
+            ChildIds: 5018994705241268700
             ChildIds: 2302045202685995592
             Collidable_v2 {
               Value: "mc:ecollisionsetting:inheritfromparent"
@@ -510,7 +523,7 @@ Assets {
           }
           Objects {
             Id: 17466183341429784721
-            Name: "Close Button"
+            Name: "Save Button"
             Transform {
               Location {
                 X: -50
@@ -518,6 +531,107 @@ Assets {
               }
               Rotation {
                 Yaw: -89.9999924
+              }
+              Scale {
+                X: 1
+                Y: 1
+                Z: 1
+              }
+            }
+            ParentId: 1524853271374595327
+            Collidable_v2 {
+              Value: "mc:ecollisionsetting:inheritfromparent"
+            }
+            Visible_v2 {
+              Value: "mc:evisibilitysetting:forceoff"
+            }
+            CameraCollidable {
+              Value: "mc:ecollisionsetting:inheritfromparent"
+            }
+            EditorIndicatorVisibility {
+              Value: "mc:eindicatorvisibility:visiblewhenselected"
+            }
+            Control {
+              Width: 24
+              Height: 24
+              UIX: -54
+              UIY: 2
+              RenderTransformPivot {
+                Anchor {
+                  Value: "mc:euianchor:middlecenter"
+                }
+              }
+              Button {
+                FontColor {
+                  A: 1
+                }
+                FontSize: 20
+                ButtonColor {
+                  G: 0.467783839
+                  B: 1
+                  A: 1
+                }
+                HoveredColor {
+                  R: 0.314583302
+                  G: 0.635210037
+                  B: 1
+                  A: 1
+                }
+                PressedColor {
+                  R: 0.314583302
+                  G: 0.635210037
+                  B: 1
+                  A: 1
+                }
+                DisabledColor {
+                  G: 0.467783451
+                  B: 1
+                  A: 0.25
+                }
+                Brush {
+                  Id: 6653268469786496343
+                }
+                ClickMode {
+                  Value: "mc:ebuttonclickmode:default"
+                }
+                Font {
+                }
+                Justification {
+                  Value: "mc:etextjustify:center"
+                }
+                VerticalJustification {
+                  Value: "mc:everticaljustification:center"
+                }
+                ShadowColor {
+                  A: 1
+                }
+                ShadowOffset {
+                }
+              }
+              AnchorLayout {
+                SelfAnchor {
+                  Anchor {
+                    Value: "mc:euianchor:middleright"
+                  }
+                }
+                TargetAnchor {
+                  Anchor {
+                    Value: "mc:euianchor:middleright"
+                  }
+                }
+              }
+            }
+          }
+          Objects {
+            Id: 5018994705241268700
+            Name: "Close Button"
+            Transform {
+              Location {
+                X: -50
+                Y: -1250
+              }
+              Rotation {
+                Yaw: -89.9999847
               }
               Scale {
                 X: 1
@@ -713,7 +827,7 @@ Assets {
               Value: "mc:eindicatorvisibility:visiblewhenselected"
             }
             Control {
-              Width: -95
+              Width: -100
               UIX: 10
               RenderTransformPivot {
                 Anchor {
@@ -9408,13 +9522,25 @@ Assets {
               Overrides {
                 Name: "cs:CloseButton"
                 ObjectReference {
-                  SubObjectId: 17466183341429784721
+                  SubObjectId: 5018994705241268700
                 }
               }
               Overrides {
                 Name: "cs:Counter"
                 ObjectReference {
                   SubObjectId: 1102957232038326496
+                }
+              }
+              Overrides {
+                Name: "cs:SaveButton"
+                ObjectReference {
+                  SubObjectId: 17466183341429784721
+                }
+              }
+              Overrides {
+                Name: "cs:InputBackground"
+                ObjectReference {
+                  SubObjectId: 2302045202685995592
                 }
               }
             }
@@ -9452,7 +9578,7 @@ Assets {
       Name: "Virtual_Keyboard_Client"
       PlatformAssetType: 3
       TextAsset {
-        Text: "local ROOT = script.parent.parent\r\n\r\nlocal TWEEN_PROP = ROOT:GetCustomProperty(\"Tween\")\r\nlocal Tween = nil\r\n\r\nif(TWEEN_PROP ~= nil) then\r\n\tTween = require(TWEEN_PROP)\r\nend\r\n\r\nlocal TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty(\"toggle_shift_after_space\")\r\nlocal MAX_LENGTH = ROOT:GetCustomProperty(\"max_length\")\r\nlocal ENABLE_CURSOR = ROOT:GetCustomProperty(\"enable_cursor\")\r\nlocal DEBUG = ROOT:GetCustomProperty(\"debug\")\r\n\r\nlocal INPUT_TEXT = script:GetCustomProperty(\"InputText\"):WaitForObject()\r\nlocal KEYS = script:GetCustomProperty(\"Keys\"):WaitForObject()\r\nlocal DELETE = script:GetCustomProperty(\"Delete\"):WaitForObject()\r\nlocal SHIFT = script:GetCustomProperty(\"Shift\"):WaitForObject()\r\nlocal KEYBOARD = script:GetCustomProperty(\"Keyboard\"):WaitForObject()\r\nlocal CLOSE_BUTTON = script:GetCustomProperty(\"CloseButton\"):WaitForObject()\r\nlocal COUNTER = script:GetCustomProperty(\"Counter\"):WaitForObject()\r\n\r\nlocal keys = KEYS:GetChildren()\r\nlocal shift_toggle = true\r\nlocal shift_line = SHIFT:FindChildByName(\"Line\")\r\nlocal tween_opacity = nil\r\nlocal is_open = false\r\n\r\nif(MAX_LENGTH > 0) then\r\n\tCOUNTER.visibility = Visibility.FORCE_ON\r\n\tCOUNTER.text = \"0 / \" .. tostring(MAX_LENGTH)\r\nend\r\n\r\nlocal function update_counter()\r\n\tif(MAX_LENGTH > 0) then\r\n\t\tCOUNTER.text = string.len(INPUT_TEXT.text) .. \" / \" .. tostring(MAX_LENGTH)\r\n\tend\r\nend\r\n\r\nlocal function toggle_letter_case(force_toggle_shift)\r\n\tif(force_toggle_shift ~= nil) then\r\n\t\tshift_toggle = force_toggle_shift\r\n\tend\r\n\r\n\tfor i, k in ipairs(keys) do\r\n\t\tlocal letter_obj = k:FindChildByName(\"Letter\")\r\n\t\tlocal letter = string.lower(tostring(letter_obj.text))\r\n\r\n\t\tif(letter ~= \"space\" and letter ~= \"shift\" and letter ~= \"delete\") then\r\n\t\t\tletter_obj.text = (shift_toggle and string.upper(letter)) or string.lower(letter)\r\n\t\tend\r\n\tend\r\n\r\n\tif(shift_toggle) then\r\n\t\tshift_line.visibility = Visibility.FORCE_ON\t\t\r\n\telse\r\n\t\tshift_line.visibility = Visibility.FORCE_OFF\r\n\tend\r\nend\r\n\r\nlocal function on_key_clicked(button)\r\n\tlocal current_str = INPUT_TEXT.text\r\n\tlocal input_letter = button:GetCustomProperty(\"letter\")\r\n\r\n\tif(input_letter == \"shift\") then\r\n\t\tshift_toggle = not shift_toggle\r\n\t\ttoggle_letter_case()\r\n\telseif(input_letter == \"delete\") then\r\n\t\tINPUT_TEXT.text = string.sub(current_str, 1, #current_str - 1)\r\n\telseif(MAX_LENGTH == 0 or string.len(INPUT_TEXT.text) < MAX_LENGTH) then\r\n\t\tinput_letter = (shift_toggle and string.upper(input_letter)) or input_letter\r\n\t\tINPUT_TEXT.text = INPUT_TEXT.text .. tostring(input_letter)\r\n\r\n\t\tEvents.Broadcast(\"keyboard.change\", INPUT_TEXT.text, MAX_LENGTH)\r\n\r\n\t\tif(TOGGLE_SHIFT_AFTER_SPACE) then\r\n\t\t\ttoggle_letter_case((input_letter == \" \" and true) or false)\r\n\t\telse\r\n\t\t\ttoggle_letter_case(false)\r\n\t\tend\r\n\tend\r\n\r\n\tupdate_counter()\r\nend\r\n\r\nlocal function open_keyboard()\r\n\tif(is_open) then\r\n\t\treturn\r\n\tend\r\n\r\n\tis_open = true\r\n\r\n\tif(ENABLE_CURSOR) then\r\n\t\tUI.SetCursorVisible(true)\r\n\t\tUI.SetCanCursorInteractWithUI(true)\r\n\tend\r\n\r\n\tif(Tween ~= nil) then\r\n\t\ttween_opacity = Tween:new(.3, { o = 0 }, { o = 1})\r\n\t\ttween_opacity:on_change(function(c)\r\n\t\t\tKEYBOARD.opacity = c.o\r\n\t\tend)\r\n\r\n\t\ttween_opacity:on_complete(function() tween_opacity = nil end)\r\n\r\n\t\ttween_opacity:on_start(function()\r\n\t\t\tKEYBOARD.visibility = Visibility.FORCE_ON\r\n\t\tend)\r\n\telse\r\n\t\tKEYBOARD.opacity = 1\r\n\t\tKEYBOARD.visibility = Visibility.FORCE_ON\r\n\tend\r\nend\r\n\r\nlocal function reset()\r\n\tKEYBOARD.opacity = 0\r\n\tKEYBOARD.visibility = Visibility.FORCE_OFF\r\n\tINPUT_TEXT.text = \"\"\r\n\ttoggle_letter_case(true)\r\n\tupdate_counter()\r\nend\r\n\r\nlocal function close_keyboard()\r\n\tif(not is_open) then\r\n\t\treturn\r\n\tend\r\n\r\n\tis_open = false\r\n\r\n\tif(ENABLE_CURSOR) then\r\n\t\tUI.SetCursorVisible(false)\r\n\t\tUI.SetCanCursorInteractWithUI(false)\r\n\tend\r\n\r\n\tif(Tween ~= nil) then\r\n\t\ttween_opacity = Tween:new(.3, { o = 1 }, { o = 0})\r\n\t\ttween_opacity:on_change(function(c)\r\n\t\t\tKEYBOARD.opacity = c.o\r\n\t\tend)\r\n\r\n\t\ttween_opacity:on_complete(reset)\r\n\telse\r\n\t\treset()\r\n\tend\r\nend\r\n\r\nfor i, k in ipairs(keys) do\r\n\tk.clickedEvent:Connect(on_key_clicked)\r\nend\r\n\r\nfunction Tick(dt)\r\n\tif(tween_opacity ~= nil) then\r\n\t\ttween_opacity:tween(dt)\r\n\tend\r\nend\r\n\r\nCLOSE_BUTTON.clickedEvent:Connect(close_keyboard)\r\n\r\nif(DEBUG) then\r\n\tGame.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)\r\n\t\tif(binding == \"ability_extra_1\") then\r\n\t\t\topen_keyboard()\r\n\t\telseif(binding == \"ability_extra_2\") then\r\n\t\t\tclose_keyboard()\r\n\t\tend\r\n\tend)\r\nend\r\n\r\nEvents.Connect(\"keyboard.open\", open_keyboard)\r\nEvents.Connect(\"keyboard.close\", close_keyboard)"
+        Text: "local ROOT = script.parent.parent\r\n\r\nlocal TWEEN_PROP = ROOT:GetCustomProperty(\"Tween\")\r\nlocal Tween = nil\r\n\r\nif(TWEEN_PROP ~= nil) then\r\n\tTween = require(TWEEN_PROP)\r\nend\r\n\r\nlocal TOGGLE_SHIFT_AFTER_SPACE = ROOT:GetCustomProperty(\"toggle_shift_after_space\")\r\nlocal MAX_LENGTH = ROOT:GetCustomProperty(\"max_length\")\r\nlocal ENABLE_CURSOR = ROOT:GetCustomProperty(\"enable_cursor\")\r\nlocal SHOW_SAVE_BUTTON = ROOT:GetCustomProperty(\"show_save_button\")\r\nlocal CLOSE_ON_SAVE = ROOT:GetCustomProperty(\"close_on_save\")\r\nlocal DEBUG = ROOT:GetCustomProperty(\"debug\")\r\n\r\nlocal INPUT_TEXT = script:GetCustomProperty(\"InputText\"):WaitForObject()\r\nlocal KEYS = script:GetCustomProperty(\"Keys\"):WaitForObject()\r\nlocal DELETE = script:GetCustomProperty(\"Delete\"):WaitForObject()\r\nlocal SHIFT = script:GetCustomProperty(\"Shift\"):WaitForObject()\r\nlocal KEYBOARD = script:GetCustomProperty(\"Keyboard\"):WaitForObject()\r\nlocal CLOSE_BUTTON = script:GetCustomProperty(\"CloseButton\"):WaitForObject()\r\nlocal COUNTER = script:GetCustomProperty(\"Counter\"):WaitForObject()\r\nlocal SAVE_BUTTON = script:GetCustomProperty(\"SaveButton\"):WaitForObject()\r\nlocal INPUT_BACKGROUND = script:GetCustomProperty(\"InputBackground\"):WaitForObject() ---@type UIImage\r\n\r\nlocal keys = KEYS:GetChildren()\r\nlocal shift_toggle = true\r\nlocal shift_line = SHIFT:FindChildByName(\"Line\")\r\nlocal tween_opacity = nil\r\nlocal is_open = false\r\n\r\nif(MAX_LENGTH > 0) then\r\n\tCOUNTER.visibility = Visibility.FORCE_ON\r\n\tCOUNTER.text = \"0 / \" .. tostring(MAX_LENGTH)\r\nend\r\n\r\nlocal function enable_save_button()\r\n\tSAVE_BUTTON.isInteractable = true\r\nend\r\n\r\nlocal function disable_save_button()\r\n\tSAVE_BUTTON.isInteractable = false\r\nend\r\n\r\nlocal function setup_save_button()\r\n\tif(SHOW_SAVE_BUTTON) then\r\n\t\tSAVE_BUTTON.visibility = Visibility.FORCE_ON\r\n\t\tINPUT_BACKGROUND.width = INPUT_BACKGROUND.width - 24\r\n\t\r\n\t\tif(MAX_LENGTH == 0) then\r\n\t\t\tenable_save_button()\r\n\t\tend\r\n\tend\r\nend\r\n\r\nlocal function update_counter()\r\n\tif(MAX_LENGTH > 0) then\r\n\t\tCOUNTER.text = string.len(INPUT_TEXT.text) .. \" / \" .. tostring(MAX_LENGTH)\r\n\t\t\r\n\t\tif(string.len(INPUT_TEXT.text) > 0) then\r\n\t\t\tenable_save_button()\r\n\t\telse\r\n\t\t\tdisable_save_button()\r\n\t\tend\r\n\tend\r\nend\r\n\r\nlocal function toggle_letter_case(force_toggle_shift)\r\n\tif(force_toggle_shift ~= nil) then\r\n\t\tshift_toggle = force_toggle_shift\r\n\tend\r\n\r\n\tfor i, k in ipairs(keys) do\r\n\t\tlocal letter_obj = k:FindChildByName(\"Letter\")\r\n\t\tlocal letter = string.lower(tostring(letter_obj.text))\r\n\r\n\t\tif(letter ~= \"space\" and letter ~= \"shift\" and letter ~= \"delete\") then\r\n\t\t\tletter_obj.text = (shift_toggle and string.upper(letter)) or string.lower(letter)\r\n\t\tend\r\n\tend\r\n\r\n\tif(shift_toggle) then\r\n\t\tshift_line.visibility = Visibility.FORCE_ON\t\t\r\n\telse\r\n\t\tshift_line.visibility = Visibility.FORCE_OFF\r\n\tend\r\nend\r\n\r\nlocal function on_key_clicked(button)\r\n\tlocal current_str = INPUT_TEXT.text\r\n\tlocal input_letter = button:GetCustomProperty(\"letter\")\r\n\r\n\tif(input_letter == \"shift\") then\r\n\t\tshift_toggle = not shift_toggle\r\n\t\ttoggle_letter_case()\r\n\telseif(input_letter == \"delete\") then\r\n\t\tINPUT_TEXT.text = string.sub(current_str, 1, #current_str - 1)\r\n\telseif(MAX_LENGTH == 0 or string.len(INPUT_TEXT.text) < MAX_LENGTH) then\r\n\t\tinput_letter = (shift_toggle and string.upper(input_letter)) or input_letter\r\n\t\tINPUT_TEXT.text = INPUT_TEXT.text .. tostring(input_letter)\r\n\r\n\t\tEvents.Broadcast(\"keyboard.change\", INPUT_TEXT.text, MAX_LENGTH)\r\n\r\n\t\tif(TOGGLE_SHIFT_AFTER_SPACE) then\r\n\t\t\ttoggle_letter_case((input_letter == \" \" and true) or false)\r\n\t\telse\r\n\t\t\ttoggle_letter_case(false)\r\n\t\tend\r\n\tend\r\n\r\n\tupdate_counter()\r\nend\r\n\r\nlocal function truncate(text)\r\n\treturn string.sub(text, 1, MAX_LENGTH)\r\nend\r\n\r\nlocal function set_text(text)\r\n\tif(text == nil) then\r\n\t\treturn\r\n\tend\r\n\r\n\tINPUT_TEXT.text = truncate(tostring(text))\r\n\tupdate_counter()\r\nend\r\n\r\nlocal function clear_text()\r\n\tINPUT_TEXT.text = \"\"\r\nend\r\n\r\nlocal function open_keyboard(text)\r\n\tif(is_open) then\r\n\t\treturn\r\n\tend\r\n\r\n\tset_text(text)\r\n\r\n\tis_open = true\r\n\r\n\tif(ENABLE_CURSOR) then\r\n\t\tUI.SetCursorVisible(true)\r\n\t\tUI.SetCanCursorInteractWithUI(true)\r\n\tend\r\n\r\n\tif(Tween ~= nil) then\r\n\t\ttween_opacity = Tween:new(.3, { o = 0 }, { o = 1})\r\n\t\ttween_opacity:on_change(function(c)\r\n\t\t\tKEYBOARD.opacity = c.o\r\n\t\tend)\r\n\r\n\t\ttween_opacity:on_complete(function() tween_opacity = nil end)\r\n\r\n\t\ttween_opacity:on_start(function()\r\n\t\t\tKEYBOARD.visibility = Visibility.FORCE_ON\r\n\t\tend)\r\n\telse\r\n\t\tKEYBOARD.opacity = 1\r\n\t\tKEYBOARD.visibility = Visibility.FORCE_ON\r\n\tend\r\nend\r\n\r\nlocal function reset()\r\n\tKEYBOARD.opacity = 0\r\n\tKEYBOARD.visibility = Visibility.FORCE_OFF\r\n\tINPUT_TEXT.text = \"\"\r\n\ttoggle_letter_case(true)\r\n\tupdate_counter()\r\nend\r\n\r\nlocal function close_keyboard()\r\n\tif(not is_open) then\r\n\t\treturn\r\n\tend\r\n\r\n\tis_open = false\r\n\r\n\tif(ENABLE_CURSOR) then\r\n\t\tUI.SetCursorVisible(false)\r\n\t\tUI.SetCanCursorInteractWithUI(false)\r\n\tend\r\n\r\n\tif(Tween ~= nil) then\r\n\t\ttween_opacity = Tween:new(.3, { o = 1 }, { o = 0})\r\n\t\ttween_opacity:on_change(function(c)\r\n\t\t\tKEYBOARD.opacity = c.o\r\n\t\tend)\r\n\r\n\t\ttween_opacity:on_complete(reset)\r\n\telse\r\n\t\treset()\r\n\tend\r\nend\r\n\r\nlocal function save()\r\n\tEvents.Broadcast(\"keyboard.save\", INPUT_TEXT.text)\r\n\r\n\tif(CLOSE_ON_SAVE) then\r\n\t\tclose_keyboard()\r\n\tend\r\nend\r\n\r\nfor i, k in ipairs(keys) do\r\n\tk.clickedEvent:Connect(on_key_clicked)\r\nend\r\n\r\nfunction Tick(dt)\r\n\tif(tween_opacity ~= nil) then\r\n\t\ttween_opacity:tween(dt)\r\n\tend\r\nend\r\n\r\nCLOSE_BUTTON.clickedEvent:Connect(close_keyboard)\r\nSAVE_BUTTON.clickedEvent:Connect(save)\r\n\r\nif(DEBUG) then\r\n\tGame.GetLocalPlayer().bindingPressedEvent:Connect(function(p, binding)\r\n\t\tif(binding == \"ability_extra_1\") then -- 1\r\n\t\t\topen_keyboard()\r\n\t\telseif(binding == \"ability_extra_2\") then -- 2\r\n\t\t\tclose_keyboard()\r\n\t\tend\r\n\tend)\r\nend\r\n\r\nsetup_save_button()\r\n\r\nEvents.Connect(\"keyboard.open\", open_keyboard)\r\nEvents.Connect(\"keyboard.close\", close_keyboard)\r\nEvents.Connect(\"keyboard.text\", set_text)\r\nEvents.Connect(\"keyboard.clear\", clear_text)"
         CustomParameters {
         }
       }
@@ -9494,6 +9620,15 @@ Assets {
       }
     }
     Assets {
+      Id: 6653268469786496343
+      Name: "Icon Checkmark"
+      PlatformAssetType: 9
+      PrimaryAsset {
+        AssetType: "PlatformBrushAssetRef"
+        AssetId: "Icon_Checkmark"
+      }
+    }
+    Assets {
       Id: 4638078728911254860
       Name: "BG Flat 002"
       PlatformAssetType: 9
@@ -9507,7 +9642,7 @@ Assets {
       Name: "Virtual_Keyboard_README"
       PlatformAssetType: 3
       TextAsset {
-        Text: "--[[\r\n\tVirtual Keyboard allows players to enter text (i.e. naming a Pet).\r\n\r\n\tIt doesn\'t support all the symbols on a keyboard, though I may expand on that in the future.\r\n\r\n\tAll settings can be found on the root of the component.\r\n\r\n\t- The input field can be restricted to a max length if needed.\r\n\t- First letter of a new word will automatically toggle the shift for uppercase, this can be turned off.\r\n\t- Enable UI cursor. WIll enable the UI cursor if enabled.\r\n\t- Debug - If enabled, then you can test the opening and closing of the keyboard by pressing 1 or 2.\r\n\r\n\t--- EVENTS ---\r\n\r\n\tkeyboard.open - Open the keyboard.\r\n\tkeyboard.close - Close the keyboard.\r\n\tkeyboard.change - When the input text changes.\r\n\r\n\t--- TWEEN ---\r\n\r\n\tA Tween library can be imported from Community Content that will enable the tweening functions when \r\n\tshowing and closing the keyboard.\r\n\r\n\tSearch for \"Tween\" by CommanderFoo.\r\n\r\n\tWhen imported, drag the Tween script onto the Virtual_Keyboard_Client property \"Tween\".\r\n]]"
+        Text: "--[[\r\n\tVirtual Keyboard allows players to enter text (i.e. naming a Pet).\r\n\r\n\tIt doesn\'t support all the symbols on a keyboard, though I may expand on that in the future.\r\n\r\n\tAll settings can be found on the root of the component.\r\n\r\n\t--- EVENTS ---\r\n\r\n\tkeyboard.open - Open the keyboard.\r\n\tkeyboard.close - Close the keyboard.\r\n\tkeyboard.change - When the input text changes.\r\n\tkeyboard.clear - Clears the input text.\r\n\tkeyboard.text - Set the input text.\r\n\tkeyboard.save - Connect to this when the player clicks the save button (if enabled).\r\n\r\n\tCode is simple, have a look at the events broadcasted to see the parameters.\r\n\t\r\n\t--- TWEEN ---\r\n\r\n\tA Tween library can be imported from Community Content that will enable the tweening functions when \r\n\tshowing and closing the keyboard.\r\n\r\n\tSearch for \"Tween\" by CommanderFoo.\r\n\r\n\tWhen imported, drag the Tween script onto the Virtual_Keyboard_Client property \"Tween\".\r\n]]"
         CustomParameters {
         }
       }
