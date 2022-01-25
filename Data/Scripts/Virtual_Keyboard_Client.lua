@@ -27,6 +27,47 @@ local SAVE_BUTTON = script:GetCustomProperty("SaveButton"):WaitForObject()
 local INPUT_BACKGROUND = script:GetCustomProperty("InputBackground"):WaitForObject()
 local BLOCKER = script:GetCustomProperty("Blocker"):WaitForObject()
 
+local TOP_PANEL = script:GetCustomProperty("TopPanel"):WaitForObject()
+local BOTTOM_PANEL = script:GetCustomProperty("BottomPanel"):WaitForObject()
+local RIGHT_PANEL = script:GetCustomProperty("RightPanel"):WaitForObject()
+local LEFT_PANEL = script:GetCustomProperty("LeftPanel"):WaitForObject()
+
+local panels = {
+
+	["TOP"] = {
+
+		panel = TOP_PANEL,
+		header_text = TOP_PANEL:GetCustomProperty("HeaderText"):GetObject(),
+		scroll_panel = TOP_PANEL:GetCustomProperty("ScrollPanel"):GetObject()
+
+	},
+
+	["BOTTOM"] = {
+
+		panel = BOTTOM_PANEL,
+		header_text = BOTTOM_PANEL:GetCustomProperty("HeaderText"):GetObject(),
+		scroll_panel = BOTTOM_PANEL:GetCustomProperty("ScrollPanel"):GetObject()
+
+	},
+
+	["RIGHT"] = {
+
+		panel = RIGHT_PANEL,
+		header_text = RIGHT_PANEL:GetCustomProperty("HeaderText"):GetObject(),
+		scroll_panel = RIGHT_PANEL:GetCustomProperty("ScrollPanel"):GetObject()
+
+	},
+
+	["LEFT"] = {
+
+		panel = LEFT_PANEL,
+		header_text = LEFT_PANEL:GetCustomProperty("HeaderText"):GetObject(),
+		scroll_panel = LEFT_PANEL:GetCustomProperty("ScrollPanel"):GetObject()
+
+	}
+
+}
+
 local keys = KEYS:GetChildren()
 local shift_toggle = true
 local shift_line = SHIFT:FindChildByName("Line")
@@ -220,6 +261,48 @@ local function save()
 	end
 end
 
+local function open_panel(panel, opts)
+	if(panels[panel] ~= nil) then
+		local the_panel = panels[panel]
+
+		the_panel.panel.visibility = Visibility.FORCE_ON
+
+		if(not opts) then
+			return
+		end
+
+		the_panel.header_text.text = opts.header_text or ""
+		the_panel.panel.width = opts.width or the_panel.panel.width
+		the_panel.panel.height = opts.height or the_panel.panel.height
+
+		if(opts.header_color ~= nil) then
+			the_panel.header_text:SetColor(opts.header_color)
+		end
+	end
+end
+
+local function close_panel(panel)
+	if(panels[panel] ~= nil) then
+		panels[panel].panel.visibility = Visibility.FORCE_OFF
+	end
+end
+
+local function clear_panel(panel)
+	if(panels[panel] ~= nil) then
+		for i, c in ipairs(panels[panel].scroll_panel:GetChildren()) do
+			c:Destroy()
+		end
+	end
+end
+
+local function add_items(panel, items)
+	if(panels[panel] ~= nil) then
+		for i, item in ipairs(items) do
+			item.parent = panels[panel].scroll_panel
+		end
+	end
+end
+
 for i, k in ipairs(keys) do
 	k.clickedEvent:Connect(on_key_clicked)
 end
@@ -251,3 +334,8 @@ Events.Connect("keyboard.text", set_text)
 Events.Connect("keyboard.clear", clear_text)
 Events.Connect("keyboard.unblock", unblock)
 Events.Connect("keyboard.block", block)
+
+Events.Connect("keyboard.open_panel", open_panel)
+Events.Connect("keyboard.close_panel", close_panel)
+Events.Connect("keyboard.clear_panel", clear_panel)
+Events.Connect("keyboard.add_items", add_items)

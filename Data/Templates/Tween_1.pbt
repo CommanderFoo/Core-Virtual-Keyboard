@@ -42,5 +42,5 @@ Assets {
     OwnerName: "CommanderFoo"
     Description: "My custom tween library."
   }
-  SerializationVersion: 103
+  SerializationVersion: 104
 }

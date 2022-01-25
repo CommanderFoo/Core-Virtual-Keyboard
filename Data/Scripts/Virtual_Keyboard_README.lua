@@ -13,6 +13,7 @@
 	keyboard.clear - Clears the input text.
 	keyboard.text - Set the input text.
 	keyboard.save - Connect to this when the player clicks the save button (if enabled).
+	And more...
 
 	Code is simple, have a look at the events broadcasted to see the parameters.
 	
