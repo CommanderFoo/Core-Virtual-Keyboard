@@ -52,7 +52,7 @@ local function setup_save_button()
 	if(SHOW_SAVE_BUTTON) then
 		SAVE_BUTTON.visibility = Visibility.FORCE_ON
 		INPUT_BACKGROUND.width = INPUT_BACKGROUND.width - 24
-	
+
 		if(MAX_LENGTH == 0) then
 			enable_save_button()
 		end
@@ -62,7 +62,7 @@ end
 local function update_counter()
 	if(MAX_LENGTH > 0) then
 		COUNTER.text = string.len(INPUT_TEXT.text) .. " / " .. tostring(MAX_LENGTH)
-		
+
 		if(string.len(INPUT_TEXT.text) > 0) then
 			enable_save_button()
 		else
@@ -86,7 +86,7 @@ local function toggle_letter_case(force_toggle_shift)
 	end
 
 	if(shift_toggle) then
-		shift_line.visibility = Visibility.FORCE_ON		
+		shift_line.visibility = Visibility.FORCE_ON
 	else
 		shift_line.visibility = Visibility.FORCE_OFF
 	end
@@ -192,6 +192,7 @@ local function close_keyboard()
 	end
 
 	is_open = false
+	Events.Broadcast("keyboard.closed")
 	unblock()
 
 	if(ENABLE_CURSOR) then
