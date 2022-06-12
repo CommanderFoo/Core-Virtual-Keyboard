@@ -1,3 +1,5 @@
+-- CommanderFoo
+
 local ROOT = script.parent.parent
 
 local TWEEN_PROP = ROOT:GetCustomProperty("Tween")

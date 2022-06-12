@@ -39,11 +39,11 @@ Assets {
           }
           Overrides {
             Name: "cs:show_save_button"
-            Bool: false
+            Bool: true
           }
           Overrides {
             Name: "cs:close_on_save"
-            Bool: false
+            Bool: true
           }
           Overrides {
             Name: "cs:enable_blocker"
@@ -98,6 +98,14 @@ Assets {
           Overrides {
             Name: "cs:enable_blocker:tooltip"
             String: "If enabled, then any UI below the keyboard will be blocked from interaction."
+          }
+          Overrides {
+            Name: "cs:close_on_save:tooltip"
+            String: "If the save button is showing and is clicked then the keyboard will be closed."
+          }
+          Overrides {
+            Name: "cs:blocker_color:tooltip"
+            String: "The overlay blocker behind the virtual keyboard. This prevents the player clicking on things behind the keyboard."
           }
         }
         Collidable_v2 {
@@ -11865,6 +11873,6 @@ Assets {
       AssetId: "None"
     }
   }
-  SerializationVersion: 104
+  SerializationVersion: 108
   DirectlyPublished: true
 }

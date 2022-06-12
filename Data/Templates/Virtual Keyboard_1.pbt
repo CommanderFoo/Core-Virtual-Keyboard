@@ -39,5 +39,5 @@ Assets {
     OwnerName: "CommanderFoo"
     Description: "A virtual keyboard to allow players to enter text."
   }
-  SerializationVersion: 104
+  SerializationVersion: 108
 }

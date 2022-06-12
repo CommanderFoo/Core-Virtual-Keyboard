@@ -6,6 +6,6 @@ Assets {
     CustomParameters {
     }
   }
-  SerializationVersion: 104
+  SerializationVersion: 108
   DirectlyPublished: true
 }
